@@ -12,7 +12,7 @@
 
 #define round(x) (int)(x+0.5)
 
-void resize(const unsigned char *data, bitmap_image &image, int width, int height, int w, int h, int bpp);
+bitmap_image *resize(const unsigned char *data, int width, int height, int w, int h, int bpp);
 
 int main() 
 {
@@ -31,15 +31,18 @@ int main()
     // get bytes per pixel
     bpp = image.bytes_per_pixel();
     
-    bitmap_image img(1024, 1024);
-    resize(data, img, width, height, img.width(), img.height(), bpp);
-    img.save_image("new.bmp");
+    bitmap_image *img = resize(data, width, height, 256, 256, bpp);
+    if (img != NULL)
+        img->save_image("new.bmp");
+    else
+        return -1;
     
     return 0;
 }
 
 // resize() - function for up/down sampling an image to an arbitrary size
 //            using nearest neighbor interpolation
+// return   - pointer to resize bitmap_image
 // data     - original pixel data
 // image    - resized image
 // width    - width of original image
@@ -47,7 +50,14 @@ int main()
 // w        - width to resize to
 // h        - height to resize to
 // bpp      - bytes per pixel
-void resize(const unsigned char *data, bitmap_image &image, int width, int height, int w, int h, int bpp) {
+bitmap_image *resize(const unsigned char *data, int width, int height, int w, int h, int bpp) {
+    // allocate new image
+    bitmap_image *img = new bitmap_image(w, h);
+    
+    // error checking
+    if (data == NULL || img == NULL || width <= 0 || height <= 0 || w <= 0 || h <= 0 || bpp <= 0) 
+        return NULL;
+        
     // determine scale factors
     double sf_w = (double)width / (double)w;
     double sf_h = (double)height / (double)h;
@@ -65,7 +75,8 @@ void resize(const unsigned char *data, bitmap_image &image, int width, int heigh
             b = data[(_j * width * bpp) + (_i * bpp) + 0];
             
             // write to new image
-            image.set_pixel(i, j, r, g, b);
+            img->set_pixel(i, j, r, g, b);
         }
     }
+    return img;
 }
