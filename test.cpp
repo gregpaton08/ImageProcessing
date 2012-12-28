@@ -38,7 +38,15 @@ int main()
     return 0;
 }
 
-
+// resize() - function for up/down sampling an image to an arbitrary size
+//            using nearest neighbor interpolation
+// data     - original pixel data
+// image    - resized image
+// width    - width of original image
+// height   - height of original image
+// w        - width to resize to
+// h        - height to resize to
+// bpp      - bytes per pixel
 void resize(const unsigned char *data, bitmap_image &image, int width, int height, int w, int h, int bpp) {
     // determine scale factors
     double sf_w = (double)width / (double)w;
