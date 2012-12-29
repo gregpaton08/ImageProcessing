@@ -22,7 +22,6 @@ typedef struct cuda_info {
 
 // resize() - function for up/down sampling an image to an arbitrary size
 //            using nearest neighbor interpolation
-// return   - pointer to resize bitmap_image
 // arguments:
 //      o_data   - original pixel data
 //      n_data   - resized image
