@@ -31,7 +31,7 @@ int main()
     // get bytes per pixel
     bpp = image.bytes_per_pixel();
     
-    bitmap_image *img = resize(data, width, height, 256, 256, bpp);
+    bitmap_image *img = resize(data, width, height, 1200, 1000, bpp);
     if (img != NULL)
         img->save_image("new.bmp");
     else
