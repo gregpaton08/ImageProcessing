@@ -69,16 +69,16 @@ void resize(unsigned char *old_data, unsigned char *new_data, int width, int hei
     if (bid == num_blocks - 1)
         h_stop = h;
     
-    for (int j = h_start; j < h_stop; ++j) {
-        for (int i = w_start; i < w_stop; ++i) {
+    for (int i = h_start; i < h_stop; ++i) {
+        for (int j = w_start; j < w_stop; ++j) {
             // find nearest neighbor
-            _i = round(i*sf_w);
-            _j = round(j*sf_h);
+            _i = round(i*sf_h);
+            _j = round(j*sf_w);
             
             // write to new image
-            new_data[(j * w * bpp) + (i * bpp) + 2] = old_data[(_j * width * bpp) + (_i * bpp) + 2];
-            new_data[(j * w * bpp) + (i * bpp) + 1] = old_data[(_j * width * bpp) + (_i * bpp) + 1];
-            new_data[(j * w * bpp) + (i * bpp) + 0] = old_data[(_j * width * bpp) + (_i * bpp) + 0];
+            new_data[(i * w * bpp) + (j * bpp) + 2] = old_data[(_i * width * bpp) + (_j * bpp) + 2];
+            new_data[(i * w * bpp) + (j * bpp) + 1] = old_data[(_i * width * bpp) + (_j * bpp) + 1];
+            new_data[(i * w * bpp) + (j * bpp) + 0] = old_data[(_i * width * bpp) + (_j * bpp) + 0];
         }
     }
 }
