@@ -80,19 +80,19 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
                 for (int l = 0; l < w; ++l) {
                     
                     // handle edge cases
-                    if (i - (h/2) + k < 0)
+                    if (i - round(h/2) + k < 0)
                         _a = 0;
-                    else if (i - (h/2) + k > height)
+                    else if (i - round(h/2) + k > height)
                         _a = height;
                     else
-                        _a = i - (h/2) + k;
+                        _a = i - round(h/2) + k;
                     
-                    if (j - (w/2) +l < 0)
+                    if (j - round(w/2) + l < 0)
                         _b = 0;
-                    else if (j + (w/2) + l > width)
+                    else if (j - round(w/2) + l > width)
                         _b = width;
-                    else 
-                        _b = j - (w/2) + l;
+                    else
+                        _b = j - round(w/2) + l;
                     
                     // get current pixel coordinates
                     curr = (_a * width * bpp) + (_b * bpp);
