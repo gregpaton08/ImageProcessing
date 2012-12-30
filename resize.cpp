@@ -1,8 +1,9 @@
 // Greg Paton
 // 26 Dec 2012
-// test.cpp
-// testing loading and saving
-// of bitmap images
+// resize.cu
+// resize filter using
+// nearest neighbor interpolation
+// optimized with CUDA
 
 #include <iostream>
 #include <string>
@@ -144,9 +145,9 @@ int main (int argc, char **argv)
     cudaEventSynchronize(stop);
     cudaEventElapsedTime(&time, start, stop);
     
-    printf("time: %fms\n", time);
+    printf("%f\n", time);
     
-    n_img.save_image("new.bmp");
+    n_img.save_image("resize.bmp");
 
     cudaFree(o_data);
     cudaFree(n_data);

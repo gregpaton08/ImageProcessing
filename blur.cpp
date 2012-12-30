@@ -1,8 +1,8 @@
 // Greg Paton
 // 26 Dec 2012
-// test.cpp
-// testing loading and saving
-// of bitmap images
+// blur.cu
+// blur filter
+// optimized using CUDA
 
 #include <iostream>
 #include <string>
@@ -85,19 +85,19 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
                 for (int l = 0; l < w; ++l) {
                     
                     // handle edge cases
-                    if (i - round(h/2) + k < 0)
+                    if (i - round((h-1)/2) + k < 0)
                         _a = 0;
-                    else if (i - round(h/2) + k > height)
+                    else if (i - round((h-1)/2) + k > height)
                         _a = height;
                     else
-                        _a = i - round(h/2) + k;
+                        _a = i - round((h-1)/2) + k;
                     
-                    if (j - round(w/2) + l < 0)
+                    if (j - round((w-1)/2) + l < 0)
                         _b = 0;
-                    else if (j - round(w/2) + l > width)
+                    else if (j - round((w-1)/2) + l > width)
                         _b = width;
                     else
-                        _b = j - round(w/2) + l;
+                        _b = j - round((w-1)/2) + l;
                     
                     // get current pixel coordinates
                     curr = (_a * width * bpp) + (_b * bpp);
@@ -183,7 +183,7 @@ int main (int argc, char **argv)
     cudaEventSynchronize(stop);
     cudaEventElapsedTime(&time, start, stop);
     
-    printf("time: %fms\n", time);
+    printf("%f\n", time);
     
     n_img.save_image("blur.bmp");
 
