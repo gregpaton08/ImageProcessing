@@ -87,25 +87,9 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
                         continue;
                     
                     // write to new image
-//                    new_data[_i + _j + 2] += old_data[curr + 2] * bf;
-//                    new_data[_i + _j + 1] += old_data[curr + 1] * bf;
-//                    new_data[_i + _j + 0] += old_data[curr + 0] * bf;
-//                    r += old_data[curr + 2] * bf;
-//                    g += old_data[curr + 1] * bf;
-//                    b += old_data[curr + 0] * bf;
-//                    new_data[_i + _j + 2] = old_data[(i * width * bpp) + (j * bpp) + 2];
-//                    new_data[_i + _j + 1] = old_data[(i * width * bpp) + (j * bpp) + 1];
-//                    new_data[_i + _j + 0] = old_data[(i * width * bpp) + (j * bpp) + 0];
-//                    r += old_data[(i * width * bpp) + (j * bpp) + 2] * bf;
-//                    g += old_data[(i * width * bpp) + (j * bpp) + 1] * bf;
-//                    b += old_data[(i * width * bpp) + (j * bpp) + 0] * bf;
-//                    r += old_data[_i + _j + 2] * bf;
-//                    g += old_data[_i + _j + 1] * bf;
-//                    b += old_data[_i + _j + 0] * bf;
                     r += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 2] * bf;
                     g += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 1] * bf;
                     b += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 0] * bf;
-
                 }
             }
             new_data[_i + _j + 2] += round(r);
@@ -116,7 +100,6 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
             b = 0;
         }
     }
-    new_data[0] = round(bf*100.0);
 }
 
 
@@ -183,7 +166,6 @@ int main (int argc, char **argv)
     cudaEventElapsedTime(&time, start, stop);
     
     printf("time: %fms\n", time);
-    printf("%d\n", n_img.data()[0]);
     
     n_img.save_image("blur.bmp");
 
