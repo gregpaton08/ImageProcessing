@@ -41,7 +41,7 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
     // determine blur factor
     const double bf = 1.0 / (double)(w * h);
     
-    int _i, _j, curr;
+    int _i, _j, _a, _b, curr;
     double r = 0;
     double g = 0;
     double b = 0;
@@ -78,20 +78,32 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
             _j = j * bpp;
             for (int k = 0; k < h; ++k) {
                 for (int l = 0; l < w; ++l) {
-                    curr = _i - (h/2) + k + _j - (w/2) + l;
                     
-                    // skip edge cases for now
-                    if (i - h < 0 || i + h > height)
-                        continue;
-                    else if (j - w < 0 || j + w > width)
-                        continue;
+                    // handle edge cases
+                    if (i - (h/2) + k < 0)
+                        _a = 0;
+                    else if (i - (h/2) + k > height)
+                        _a = height;
+                    else
+                        _a = i - (h/2) + k;
+                    
+                    if (j - (w/2) +l < 0)
+                        _b = 0;
+                    else if (j + (w/2) + l > width)
+                        _b = width;
+                    else 
+                        _b = j - (w/2) + l;
+                    
+                    // get current pixel coordinates
+                    curr = (_a * width * bpp) + (_b * bpp);
                     
                     // write to new image
-                    r += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 2] * bf;
-                    g += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 1] * bf;
-                    b += old_data[((i - (h/2) + k) * width * bpp) + ((j - (w/2) - l) * bpp) + 0] * bf;
+                    r += old_data[curr + 2] * bf;
+                    g += old_data[curr + 1] * bf;
+                    b += old_data[curr + 0] * bf;
                 }
             }
+            // update new image
             new_data[_i + _j + 2] += round(r);
             new_data[_i + _j + 1] += round(g);
             new_data[_i + _j + 0] += round(b);
