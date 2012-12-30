@@ -50,32 +50,37 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
     // distribute work among blocks by height
     const int num_threads = info.tb_x * info.tb_y;
     const int num_blocks  = info.gr_x * info.gr_y;
-    const int w_work_width = w / num_threads;
-    const int h_work_width = h / num_blocks;
+    
+    const int w_work_width = width / num_threads;
+    const int h_work_width = height / num_blocks;
+    
     const int tid = threadIdx.x + (threadIdx.y * info.tb_x);
     const int bid = blockIdx.x + (blockIdx.y * info.gr_x);
+    
     int w_start = tid * w_work_width;
     int w_stop = w_start + w_work_width;
     int h_start = bid * h_work_width;
     int h_stop = h_start + h_work_width;
     
     // make sure data dimensions are never exceeded
-    if (w_stop > w)
-        w_stop = w;
-    if (h_stop > h)
-        h_stop = h;
+    if (w_stop > width)
+        w_stop = width;
+    if (h_stop > height)
+        h_stop = height;
     
-    // if w is not evenly divisible by num_threads
-    // give remainder of work to last thread
+    // if width is not evenly divisible
+    // give remainder of work to last thread/block
     if (tid == num_threads - 1)
-        w_stop = w;
+        w_stop = width;
     if (bid == num_blocks - 1)
-        h_stop = h;
+        h_stop = height;
     
-    for (int i = 0; i < height; ++i) {
+    for (int i = h_start; i < h_stop; ++i) {
         _i = i * width * bpp;
-        for (int j = 0; j < width; ++j) {
+        for (int j = w_start; j < w_stop; ++j) {
             _j = j * bpp;
+            
+            // apply filter window
             for (int k = 0; k < h; ++k) {
                 for (int l = 0; l < w; ++l) {
                     
@@ -103,6 +108,7 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
                     b += old_data[curr + 0] * bf;
                 }
             }
+            
             // update new image
             new_data[_i + _j + 2] += round(r);
             new_data[_i + _j + 1] += round(g);
