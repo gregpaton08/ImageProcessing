@@ -4,6 +4,7 @@
 // resize filter using
 // nearest neighbor interpolation
 // optimized with CUDA
+// https://github.com/gregpaton08/ImageProcessing
 
 #include <iostream>
 #include <string>

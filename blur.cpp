@@ -3,6 +3,7 @@
 // blur.cu
 // blur filter
 // optimized using CUDA
+// https://github.com/gregpaton08/ImageProcessing
 
 #include <iostream>
 #include <string>
