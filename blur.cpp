@@ -104,16 +104,16 @@ void blur(unsigned char *old_data, unsigned char *new_data, int width, int heigh
                     curr = (_a * width * bpp) + (_b * bpp);
                     
                     // write to new image
-                    r += old_data[curr + 2] * bf;
-                    g += old_data[curr + 1] * bf;
                     b += old_data[curr + 0] * bf;
+                    g += old_data[curr + 1] * bf;
+                    r += old_data[curr + 2] * bf;
                 }
             }
             
             // update new image
-            new_data[_i + _j + 2] += round(r);
-            new_data[_i + _j + 1] += round(g);
             new_data[_i + _j + 0] += round(b);
+            new_data[_i + _j + 1] += round(g);
+            new_data[_i + _j + 2] += round(r);
             r = 0;
             g = 0;
             b = 0;

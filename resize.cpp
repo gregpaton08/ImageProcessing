@@ -77,9 +77,9 @@ void resize(unsigned char *old_data, unsigned char *new_data, int width, int hei
             _j = round(j*sf_w);
             
             // write to new image
-            new_data[(i * w * bpp) + (j * bpp) + 2] = old_data[(_i * width * bpp) + (_j * bpp) + 2];
-            new_data[(i * w * bpp) + (j * bpp) + 1] = old_data[(_i * width * bpp) + (_j * bpp) + 1];
             new_data[(i * w * bpp) + (j * bpp) + 0] = old_data[(_i * width * bpp) + (_j * bpp) + 0];
+            new_data[(i * w * bpp) + (j * bpp) + 1] = old_data[(_i * width * bpp) + (_j * bpp) + 1];
+            new_data[(i * w * bpp) + (j * bpp) + 2] = old_data[(_i * width * bpp) + (_j * bpp) + 2];
         }
     }
 }
